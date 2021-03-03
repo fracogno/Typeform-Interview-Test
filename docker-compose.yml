@@ -1,0 +1,15 @@
+version: "3"
+services:
+  ml:
+    container_name: ml
+    build:
+      context: ./ml
+      dockerfile: Dockerfile
+    image: ml_img
+    volumes:
+      - ./api:/usr/src/app
+    ports:
+      - "5000:5000"
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
