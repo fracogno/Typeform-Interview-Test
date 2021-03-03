@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     image: ml_img
     volumes:
-      - ./api:/usr/src/app
+      - ./ml:/usr/src/app
     ports:
       - "5000:5000"
     dns:
