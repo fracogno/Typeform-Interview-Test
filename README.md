@@ -9,18 +9,22 @@ sudo docker-compose up -d
 > sudo docker exec -it ml /bin/bash
 
 ## Task 1
+### Goal : Predict SUBMISSIONS / VIEWS (regression problem). Values are in the range [0,1].
 
-###
-### Run prediction
-> http://188.166.213.241:5000/typeform/task_1
+### Modus operandi
+Train Random forest / MLP => ERROR is ~ 0.17 on test set. It means by average the prediction is 17% of the actual ground truth value (% because values between 0-1).
 
-SUBMISSIONS / VIEWS is regression problem, values are in the range [0,1].
+### Run prediction in the cloud (hosted with Docker)
+> python3 ml/src/predict.py
 
-Models cannot even overfit!! => HYPOTHESIS : Same rows with different regression labels ??
+### N.B.
+Models cannot even overfit 100%!! => HYPOTHESIS : Same rows with different regression labels
 Double check with the next command:
-> cat ml/dataset/completion_rate.csv | cut -d "," -f 4- | sort | uniq -d | wc
-
+> head -n 50000 ml/dataset/completion_rate.csv | cut -d "," -f 4- | sort | uniq -d | wc
 The above command: displays the file, selects only the features columns, sort them and see whether there are duplicates => There are!!
 
-CONCLUSION : 
+CONCLUSION :
+The accuracy isn't too bad! However, having same rows with different labels it doesn't help....
 
+## Task 2
+### Goal : Cluster same type of questions (Unsupervised learning)
