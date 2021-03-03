@@ -2,11 +2,17 @@
 Solution of two problems for the Typeform Interview first stage.
 
 ## Docker
+### Start docker compose for Flask to train / run prediction
 sudo docker-compose up -d
+
+### Enter docker container to train
+> sudo docker exec -it ml /bin/bash
 
 ## Task 1
 
-> http://188.166.213.241/typeform/task_1?
+###
+### Run prediction
+> http://188.166.213.241:5000/typeform/task_1
 
 SUBMISSIONS / VIEWS is regression problem, values are in the range [0,1].
 
