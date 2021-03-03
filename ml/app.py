@@ -21,7 +21,7 @@ def task_1():
     model = models_t1.get_MLP()
     model.load_weights(base_path + "checkpoints/task_1/model")
     data /= normalization_by_feature
-    return jsonify({"prediction": str(model.predict(data))})
+    return jsonify({"prediction": model.predict(data).tolist()})
 
 
 if __name__ == "__main__":
