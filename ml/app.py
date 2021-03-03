@@ -8,6 +8,9 @@ app = Flask(__name__)
 base_path = misc.get_base_path()
 normalization_by_feature = misc.load_pickle(base_path + "pickles/task_1_max.py")
 
+model = models_t1.get_MLP()
+model.load_weights(base_path + "checkpoints/task_1/model")
+
 
 @app.route("/typeform/task_1", methods=['POST'])
 def task_1():
@@ -18,8 +21,6 @@ def task_1():
     if len(data.shape) != 2 or data.shape[1] != 47:
         return make_response(jsonify({"error": "Wrong data shape."}), 400)
 
-    model = models_t1.get_MLP()
-    model.load_weights(base_path + "checkpoints/task_1/model")
     data /= normalization_by_feature
     return jsonify({"prediction": model.predict(data).tolist()})
 
