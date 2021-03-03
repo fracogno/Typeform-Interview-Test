@@ -3,7 +3,7 @@ from flask import Flask, jsonify, make_response, request
 app = Flask(__name__)
 
 
-@routes.route("/typeform/task_1", methods=['GET'])
+@app.route("/typeform/task_1", methods=['GET'])
 def task_1():
     ##return make_response(jsonify({"error": message}), 400)
     #request.args["name"]
