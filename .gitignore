@@ -1,5 +1,6 @@
 ml/dataset/completion_rate.csv
 ml/pickles/task_1_data
+ml/dataset/glove.6B/
 .idea
 
 # Byte-compiled / optimized / DLL files
