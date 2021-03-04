@@ -70,7 +70,7 @@ def train(params):
         steps = 0.
         for batch in train_dataset:
             if len(batch) != params["batch_size"]:
-                pass
+                continue
             dec_input = tf.expand_dims([dict_tracked.word_to_index['<START>']] * params["batch_size"], 1)
             batch_loss = task_2.train_step(batch, batch, encoder, decoder, enc_hidden, optimizer, dec_input, loss_object, False)
             total_loss += batch_loss
@@ -81,7 +81,7 @@ def train(params):
         steps = 0.
         for batch in test_dataset:
             if len(batch) != params["batch_size"]:
-                pass
+                continue
             dec_input = tf.expand_dims([dict_tracked.word_to_index['<START>']] * params["batch_size"], 1)
             batch_loss = task_2.train_step(batch, batch, encoder, decoder, enc_hidden, optimizer, dec_input, loss_object, True)
             total_loss += batch_loss
