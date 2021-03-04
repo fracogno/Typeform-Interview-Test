@@ -73,7 +73,6 @@ def train(params):
             batch_loss = task_2.train_step(batch, batch, encoder, decoder, enc_hidden, optimizer, dec_input, loss_object, False)
             total_loss += batch_loss
             steps += 1
-            break
         print('Epoch {} Loss {:.4f}'.format(epoch + 1, total_loss / steps))
 
         total_loss = 0.
@@ -83,7 +82,6 @@ def train(params):
             batch_loss = task_2.train_step(batch, batch, encoder, decoder, enc_hidden, optimizer, dec_input, loss_object, True)
             total_loss += batch_loss
             steps += 1
-            break
         print('Validation epoch {} Loss {:.4f}'.format(epoch + 1, total_loss / steps))
 
         if total_loss < best_loss:
@@ -92,4 +90,4 @@ def train(params):
 
 
 if __name__ == "__main__":
-    train({"batch_size": 8, "epochs": 1000, "embedding_size": 100, "units": 16})
+    train({"batch_size": 32, "epochs": 1000, "embedding_size": 100, "units": 32})
