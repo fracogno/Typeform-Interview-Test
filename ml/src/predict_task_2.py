@@ -13,7 +13,7 @@ def predict():
     X_mapped = misc.load_pickle(base_path + "pickles/X_mapped")
     dict_tracked = misc.load_pickle(base_path + "pickles/dictionary")
     params = misc.load_pickle(base_path + "pickles/params")
-    embeddings_matrix = misc.load_pickle(base_path + "pickles/params")
+    embeddings_matrix = misc.load_pickle(base_path + "pickles/task_2_embeddings_matrix")
     vocab_size = len(dict_tracked.index_to_word)
 
     # Encoder only needed

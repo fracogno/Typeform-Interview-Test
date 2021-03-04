@@ -18,7 +18,8 @@ def train(params):
     # Data preprocessing
     X = misc.clean_strings(X)
     print(len(X))
-    X_tokens = [word_tokenize(sample) for sample in X]
+    X_tokens = [word_tokenize(sample) for sample in X if sample != ""]
+    X_tokens = [sample for sample in X_tokens if len(sample) <= 50]
     max_length_sentence = max([len(sample) for sample in X_tokens])
 
     # Create dictionary and map words to integers
@@ -39,12 +40,12 @@ def train(params):
     test_dataset = tf.data.Dataset.from_tensor_slices(X_test).shuffle(50).batch(params["batch_size"])
 
     # Load pretrained embeddings (from pickles to save time)
-    if os.path.isfile(base_path + "pickles/task_1_embeddings_matrix"):
-        embeddings_matrix = misc.load_pickle(base_path + "pickles/task_1_embeddings_matrix")
+    if os.path.isfile(base_path + "pickles/task_2_embeddings_matrix"):
+        embeddings_matrix = misc.load_pickle(base_path + "pickles/task_2_embeddings_matrix")
     else:
         embeddings_matrix = misc.load_pretrained_embeddings_matrix(base_path + "dataset/glove.6B/glove.6B." + str(params["embedding_size"])+"d.txt",
                                                                    dict_tracked, params["embedding_size"])
-        misc.save_pickle(base_path + "pickles/task_1_embeddings_matrix", embeddings_matrix)
+        misc.save_pickle(base_path + "pickles/task_2_embeddings_matrix", embeddings_matrix)
 
     # Models
     encoder = task_2.Encoder(embeddings_matrix, vocab_size, params["embedding_size"], params["units"], params["batch_size"])
