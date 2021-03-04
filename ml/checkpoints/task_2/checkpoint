@@ -1,2 +1,2 @@
-model_checkpoint_path: "ckpt-encoder"
-all_model_checkpoint_paths: "ckpt-encoder"
+model_checkpoint_path: "embedding.ckpt-1"
+all_model_checkpoint_paths: "embedding.ckpt-1"
