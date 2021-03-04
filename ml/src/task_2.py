@@ -94,4 +94,4 @@ def train(params):
 
 
 if __name__ == "__main__":
-    train({"batch_size": 32, "epochs": 1000, "embedding_size": 100, "units": 32})
+    train({"batch_size": 32, "epochs": 200, "embedding_size": 100, "units": 32})
