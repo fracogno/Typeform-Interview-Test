@@ -28,3 +28,17 @@ The accuracy isn't too bad! However, having same rows with different labels it d
 
 ## Task 2
 ### Goal : Cluster same type of questions (Unsupervised learning)
+
+### Modus operandi
+Train a Encoder-Decoder model with attention as an autoencoder (reconstruct the input sequence). Moreover, I use pretrained embeddings from GloVe.
+Once the model has been trained, I throw the decoder away and just use the encoder. I do this to decoder my sentences into a fixed amount of numbers (in my case 16 numbers). After that I encoded my sentence into 16 numbers, I apply PCA to get 3 numbers out of this.
+Finally, I plot in 3D using Tensorboard the sentences. It can be noticed that similar sentences cluster together in 3D space. This is how the unsupervised clustering is done!
+
+### Run training
+> python3 ml/src/task_2.py
+
+### Run predictions and PCA
+> python3 ml/src/predict_task_2.py
+
+### N.B.
+I have put up a quick model. Many improvements could be made! Can be discussed orally.
