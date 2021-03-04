@@ -2,7 +2,7 @@
 Solution of two problems for the Typeform Interview first stage.
 
 ## Docker
-### Start docker compose for Flask to train / run prediction
+### Start docker compose for Flask to train / run prediction (ONLY DONE IN MY CLOUD, client doesn't need this)
 sudo docker-compose up -d
 
 ### Enter docker container to train
