@@ -40,5 +40,9 @@ Finally, I plot in 3D using Tensorboard the sentences. It can be noticed that si
 ### Run predictions and PCA
 > python3 ml/src/predict_task_2.py
 
+### TO VISUALIZE sentences in 3D space
+> tensorboard --logdir=ml/checkpoints/task_2/
+> http://localhost:6006/#projector
+
 ### N.B.
 I have put up a quick model. Many improvements could be made! Can be discussed orally.
