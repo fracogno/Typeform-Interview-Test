@@ -23,10 +23,12 @@ def train(params):
 
     # Create dictionary and map words to integers
     dict_tracked = dictionary.LanguageDictionary(X_tokens, max_length_sentence)
+    vocab_size = len(dict_tracked.index_to_word)
     X_mapped = np.array([np.array(dict_tracked.text_to_indices(["<START>"] + sample + ["<END>"])) for sample in X_tokens])
 
     # Pad sequences
     X_mapped = tf.keras.preprocessing.sequence.pad_sequences(X_mapped, maxlen=max_length_sentence, dtype='int32', padding='post')
+    misc.save_pickle(base_path + "pickles/X_mapped", X_mapped)
     #print(dict_tracked.indices_to_text(X_mapped[10]))
 
     # Split dataset and create TF datasets
@@ -43,22 +45,50 @@ def train(params):
         embeddings_matrix = misc.load_pretrained_embeddings_matrix(base_path + "dataset/glove.6B/glove.6B." + str(params["embedding_size"])+"d.txt",
                                                                    dict_tracked, params["embedding_size"])
         misc.save_pickle(base_path + "pickles/task_1_embeddings_matrix", embeddings_matrix)
-    encoder = task_2.Encoder(embeddings_matrix, len(dict_tracked.index_to_word), params["embedding_size"], 128, params["batch_size"])
+
+    # Models
+    encoder = task_2.Encoder(embeddings_matrix, vocab_size, params["embedding_size"], params["units"], params["batch_size"])
+    decoder = task_2.Decoder(vocab_size, encoder.embedding, params["units"])
+
+    # Optimizers and loss
+    optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
+    loss_object = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True, reduction='none')
+
+    # Save useful pickles
+    misc.save_pickle(base_path + "pickles/dictionary", dict_tracked)
+    misc.save_pickle(base_path + "pickles/X_mapped", X_mapped)
+    misc.save_pickle(base_path + "pickles/params", params)
 
     # Training
+    best_loss = 10000.
     for epoch in range(params["epochs"]):
 
         enc_hidden = encoder.initialize_hidden_state()
 
+        total_loss = 0.
+        steps = 0.
         for batch in train_dataset:
-            print(batch.shape)
-            output, state = encoder(batch, enc_hidden)
-            print(output.shape)
-            print(state.shape)
-
-
+            dec_input = tf.expand_dims([dict_tracked.word_to_index['<START>']] * params["batch_size"], 1)
+            batch_loss = task_2.train_step(batch, batch, encoder, decoder, enc_hidden, optimizer, dec_input, loss_object, False)
+            total_loss += batch_loss
+            steps += 1
             break
+        print('Epoch {} Loss {:.4f}'.format(epoch + 1, total_loss / steps))
+
+        total_loss = 0.
+        steps = 0.
+        for batch in test_dataset:
+            dec_input = tf.expand_dims([dict_tracked.word_to_index['<START>']] * params["batch_size"], 1)
+            batch_loss = task_2.train_step(batch, batch, encoder, decoder, enc_hidden, optimizer, dec_input, loss_object, True)
+            total_loss += batch_loss
+            steps += 1
+            break
+        print('Validation epoch {} Loss {:.4f}'.format(epoch + 1, total_loss / steps))
+
+        if total_loss < best_loss:
+            encoder.save_weights(base_path + "checkpoints/task_2/ckpt-encoder")
+            best_loss = total_loss
 
 
 if __name__ == "__main__":
-    train({"batch_size": 64, "epochs": 1, "embedding_size": 100})
+    train({"batch_size": 8, "epochs": 1000, "embedding_size": 100, "units": 16})
